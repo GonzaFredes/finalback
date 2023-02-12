@@ -1,0 +1,125 @@
+{
+    "products": [
+        {
+            "id": "0",
+            "title": "Zapatillas Nike Air Force One",
+            "description": "Las zapatillas del mañana, que puedes obtener hoy",
+            "price": "1500",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/432205-800-auto?v=637571120506070000&width=800&height=auto&aspect=true",
+            "code": "ZAP0",
+            "stock": "15",
+            "status": "true",
+            "category": "zapatillas"
+        },
+        {
+            "id": "1",
+            "title": "Zapatillas Nike Air Force One Limited Edition",
+            "description": "Obten las ultimas Nike Air Force One edicion limitada",
+            "price": "2500",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/726596-800-auto?v=638113991766130000&width=800&height=auto&aspect=true",
+            "code": "ZAP1",
+            "stock": "8",
+            "status": "true",
+            "category": "zapatillas"
+        },
+        {
+            "id": "2",
+            "title": "Zapatillas Adidas Low Rider ",
+            "description": "Las zapatillas perfil bajo que estas buscando las tenemos aqui",
+            "price": "900",
+            "thumbnail": "https://assetscdn.loadbee.com/i/1000x1000/catalogue/eyrhd9tnwyeestvh/images-originals/adce6a44b7d6f79014f71669c1655bffdd1b780c.jpg",
+            "code": "ZAP2",
+            "stock": "12",
+            "status": "true",
+            "category": "zapatillas"
+        },
+        {
+            "id": "3",
+            "title": "Zapatillas Adidas Superstar White",
+            "description": "Las superstar de toda la vida, pero modelo 2023",
+            "price": "1100",
+            "thumbnail": "https://assetscdn.loadbee.com/i/1000x1000/catalogue/eyrhd9tnwyeestvh/images-assets/7387918eddb3f74314ef0f966134a5c6ccf4d39a.jpg",
+            "code": "ZAP3",
+            "stock": "7",
+            "status": "true",
+            "category": "zapatillas"
+        },
+        {
+            "id": "4",
+            "title": "Zapatillas Converse Urban",
+            "description": "Zapatillas Converse para lucir mucho mejor",
+            "price": "750",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/476220-800-auto?v=637685948826770000&width=800&height=auto&aspect=true",
+            "code": "ZAP4",
+            "stock": "15",
+            "status": "true",
+            "category": "zapatillas"
+        },
+        {
+            "id": "5",
+            "title": "Remera Under Armour Classic",
+            "description": "Lo clasico siempre queda bien",
+            "price": "150",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/285284-800-auto?v=637050387265530000&width=800&height=auto&aspect=true",
+            "code": "REM1",
+            "stock": "10",
+            "status": "true",
+            "category": "remeras"
+        },
+        {
+            "id": "6",
+            "title": "Remera Under Armour Vintage",
+            "description": "Nuestras remeras estan compuestas de los mejores materiales para que luzcas como el mejor",
+            "price": "160",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/285284-800-auto?v=637050387265530000&width=800&height=auto&aspect=true",
+            "code": "REM2",
+            "stock": "10",
+            "status": "true",
+            "category": "remeras"
+        },
+        {
+            "id": "7",
+            "title": "Remera Adidas Forum",
+            "description": "Nueva coleccion 2023 Forum",
+            "price": "200",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/706435-800-auto?v=638098128997600000&width=800&height=auto&aspect=true",
+            "code": "REM3",
+            "stock": "10",
+            "status": "true",
+            "category": "remeras"
+        },
+        {
+            "id": "8",
+            "title": "Remera Nike Listen",
+            "description": "Escucha tus ideas",
+            "price": "1700",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/556727-800-auto?v=637876957779700000&width=800&height=auto&aspect=true",
+            "code": "REM4",
+            "stock": "10",
+            "status": "true",
+            "category": "remeras"
+        },
+        {
+            "id": "9",
+            "title": "Pantalon Hang Loose Est",
+            "description": "Echo para que te lo pongas con cualquier prenda",
+            "price": "1500",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/461519-500-auto?v=637655159545930000&width=500&height=auto&aspect=true",
+            "code": "PAN1",
+            "stock": "10",
+            "status": "true",
+            "category": "pantalones"
+        },
+        {
+            "id": "10",
+            "title": "Pantalon Quiksilver Lounge",
+            "description": "En la playa o en la ciudad, queda bien donde estes",
+            "price": "1900",
+            "thumbnail": "https://essential.vtexassets.com/arquivos/ids/714874-800-auto?v=638104016827600000&width=800&height=auto&aspect=true",
+            "code": "PAN2",
+            "stock": "10",
+            "status": "true",
+            "category": "pantalones"
+        }
+    ]
+}
