@@ -12,9 +12,9 @@ const cartsSchema = new mongoose.Schema([
     },
     products: {
       _id: false,
-      type: Array,
-      default: [],
-    }
+      type:Array,
+      default:[],
+      }
   }
 ]
 )

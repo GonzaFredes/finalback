@@ -13,7 +13,7 @@ class BdCartsManager {
             return { msg: "Error al crear Carritos" }
         }
     };
-    
+
     getCartsId = async (id) => {
         try {
             const cart = await cartsModel.findById(id);
@@ -22,7 +22,7 @@ class BdCartsManager {
             return undefined;
         }
     };
-    
+
     getCarts = async () => {
         try {
             const cart = await cartsModel.find();
@@ -37,25 +37,26 @@ class BdCartsManager {
         console.log(JSON.stringify(product))
         const resultado = cart.products.findIndex((prod) => prod.id == product.id)
         console.log(resultado)
-        if (resultado === -1){
-        }else {
-            
+        if (resultado === -1) {
+        } else {
+
         }
     };
-    
+
     updateToCart = async (cart) => {
-        const cartUpdated = await cartsModel.findByIdAndUpdate(cart.id, cart,{new: true,});
+        const cartUpdated = await cartsModel.findByIdAndUpdate(cart.id, cart, { new: true, });
         return cartUpdated;
     };
 
-        // getCartByUsername = async (username) => {
-        //     try {
-        //         const cart = await cartsModel.findOne({username:'1'})
-        //         return cart
-        //     } catch (error) {
-        //         return { msg: 'Error al mostrar carrito'}
-        //     }
-        // };
+
+    // getCartByUsername = async (username) => {
+    //     try {
+    //         const cart = await cartsModel.findOne({username:'1'})
+    //         return cart
+    //     } catch (error) {
+    //         return { msg: 'Error al mostrar carrito'}
+    //     }
+    // };
 }
 
-module.exports = BdCartsManager 
+module.exports = new BdCartsManager();

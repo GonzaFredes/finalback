@@ -1,17 +1,11 @@
 <main id="main" class="container mt-5">
     <div class="row d-flex d-flex justify-content-between">
-        {{#each products}}
+        {{#each carts}}
         <div class="card col-3 m-2 border border-4">
-            <img src="{{thumbnail}}" class="img-fluid" alt="">
             <div class="card-body">
                 <h5 class="card-title text-center">{{title}}</h5>
-                <p class="card-text text-center mb-0">{{description}}</p>
-                <p class="card-text text-center">cod: {{code}}</p>
                 <h2 class="card-text text-center ">$ {{price}}</h2>
-                <p class="card-text text-center ">Cantidad: {{stock}}</p>
-                <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary">Agregar</button>
-                </div>
+                <h1>Cantidad: {{quantity}}</h1>
             </div>
         </div>
         {{/each}}

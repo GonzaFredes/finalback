@@ -1,12 +1,11 @@
 const Products = require("../dao/mongoManager/BdProductManager");
 const BdCartManager = require("../dao/mongoManager/BdCartManager");
 const { find } = require("../dao/models/products.model");
-const Carts = new BdCartManager()
 
 
 const createCarts = async (req, res) => {
   const cart = req.body
-  const Createcart = await Carts.CreateCarts(cart);
+  const Createcart = await BdCartManager.CreateCarts(cart);
   if (!Createcart.error) {
     res.json(Createcart)
 
@@ -17,7 +16,8 @@ const createCarts = async (req, res) => {
 
 const bdgetCartId = async (req, res) => {
   const id = req.params.cid
-  const cart = await Carts.getCartsId(id);
+  console.log(id)
+  const cart = await BdCartManager.getCartsId(id);
   if (!cart.error) {
     res.json(cart)
   } else {
@@ -25,8 +25,8 @@ const bdgetCartId = async (req, res) => {
   }
 }
 
-const bdgetCart = async (req, res) => {
-  const cart = await Carts.getCarts();
+const bdgetCarts = async (req, res) => {
+  const cart = await BdCartManager.getCarts();
   if (!cart.error) {
     res.json(cart)
   } else {
@@ -45,7 +45,7 @@ const addProductToCart = async (req, res) => {
     });
   }
 
-  const cart = await Carts.getCartsId(cid);
+  const cart = await BdCartManager.getCartsId(cid);
 
   if (!cart) {
     const newCart = {
@@ -55,7 +55,7 @@ const addProductToCart = async (req, res) => {
       username: cid
     }
 
-    const cartToSave = await Carts.addProductToCarts(newCart);
+    const cartToSave = await BdCartManager.addProductToCarts(newCart);
 
     return res.status(200).json({
       msg: 'Carrito creado con exito',
@@ -70,7 +70,7 @@ const addProductToCart = async (req, res) => {
     cart.quantity = cart.quantity + 1
     // cart.priceTotal = cart.products.reduce(())
 
-    const cartToUpdate = await Carts.updateToCart(cart)
+    const cartToUpdate = await BdCartManager.updateToCart(cart)
 
     return res.status(201).json({
       msg: `Producto agregado al carrito: ${cid}`,
@@ -81,7 +81,7 @@ const addProductToCart = async (req, res) => {
 
 const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
-  const Cart = await Carts.getCartsId(cid);
+  const Cart = await BdCartManager.getCartsId(cid);
   const findProductTocart = Cart.products.find((prod) => prod.id === pid)
 
   if (!findProductTocart) {
@@ -99,29 +99,48 @@ const deleteProductToCart = async (req, res) => {
     Cart.quantityTotal = Cart.quantityTotal - 1;
     const total = Cart.products.reduce((acumulador, total) => acumulador + total.price * total.quantity, 0);
     Cart.priceTotal = total;
-    const cartToUpdate = await Carts.updateToCart(Cart);
+    const cartToUpdate = await BdCartManager.updateToCart(Cart);
     return res.status(200).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate });
   }
 };
 
+const deleteAllProductsCart = async (req, res) => {
+  const { cid, pid } = req.params;
+  const Cart = await BdCartManager.getCartsId(cid);
+  if (Cart.products.length > 0) {
+    const cartToDelete = Cart.deleteMany({});
+    return {msg: 'Se eliminaron todos los productos del carrito'}
+  } else {
+    return {msg: 'Este carrito no tiene productos para eliminar'};
+  }
+}
 
+const updateCart = async (req, res) => {
+  const cartToUpdate = await BdCartManager.updateToCart(Cart);
 
-// const addProductToCart = async (req, res) => {
-//   const { cid, pid } = req.params;
-//   const product = await Products.getProductId(pid);
-//   if (product) {
-//     const respuesta = await Carts.addProductToCarts(cid,product);
-//     return(product)
-//   }else{
-//     res.json(product)
-//   }
-// }
+//PUT api/carts/:cid deberá actualizar el carrito con un arreglo de productos con el formato especificado arriba.
+}
+
+const updateQuantityOnCart = async (req, res) => {
+  updateQuantityToCart = async (quantity) => {
+    try {
+        const cart = await cartsModel.findOneAndUpdate({quantity})
+
+    } catch (error) {
+        return {msg: 'Error al actualizar la cantidad carrito'}
+    }
+};
+//Debe actualizar solamente la cantidad de ejemplares de un mismo producto que le pase por req.body, osea en el boton agregar producto de las cards
+}
 
 
 module.exports = {
   createCarts,
-  bdgetCart,
+  bdgetCarts,
   bdgetCartId,
   addProductToCart,
   deleteProductToCart,
+  deleteAllProductsCart,
+  updateCart,
+  updateQuantityOnCart,
 }

@@ -6,7 +6,6 @@ const productsRouteBd = require('./routes/products.router.bd')
 const cartsRouteBd = require('./routes/carts.router.bd')
 const viewRoute = require('./routes/views.route')
 const chatsRouter = require('./routes/chats.router')
-const productModel = require('./dao/models/products.model')
 const server = express();
 const mongoose = require('mongoose');
 
@@ -26,8 +25,8 @@ server.use(express.json())
 server.use(express.urlencoded({extended:true}))
 //rutas
 
-server.use("/api/products/", productsRoute);
-server.use("/api/carts/", cartsRoute);
+// server.use("/api/products/", productsRoute);
+// server.use("/api/carts/", cartsRoute);
 server.use("/", viewRoute);
 
 //rutas mongodb
