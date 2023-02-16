@@ -23,6 +23,15 @@ class BdCartsManager {
         }
     };
 
+    renderCartId = async (id) => {
+        try {
+            const cart = await cartsModel.findById(id);
+            return [cart]
+        } catch (error) {
+            return {msg: "El carrito ingresado no existe"};
+        } 
+    }
+
     getCarts = async () => {
         try {
             const cart = await cartsModel.find();

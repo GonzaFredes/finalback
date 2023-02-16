@@ -5,7 +5,7 @@ class BdProductManager {
     this.products = []
   }
 
-  getProduct = async (page = 1, limit = 10, sort, query) => {
+  getProduct = async (page = 1, limit = 6, sort, query) => {
     try {
       const products = await productModel.paginate(query, { page, limit, sort:{price:sort}});
       return products

@@ -14,18 +14,25 @@
             </div>
         </div>
         {{/each}}
-        <div class="d-flex">
+        <div class="d-flex justify-content-center ">
             {{#if hasPrevPage}}
-            <button>Anterior</button>
-            {{else}}
             <button id="prev">Anterior</button>
+            {{else}}
+            <button disabled id="prev">Anterior</button>
             {{/if}}
-            <p>{{page}}</p>
+            <p id="page"> {{page}} </p>
             {{#if hasNextPage}}
-            <button>Siguiente</button>
+            <button disabled id="next">Siguiente</button>
             {{else}}
             <button id="next">Siguiente</button>
             {{/if}}
+        </div>
+        {{!-- <div>
+            <a href="/products?page={{prevPage}}&&limit=">Prev</a>
+            <a href="/products?page={{nextPage}}">Next</a>
+        </div> --}}
+        <div class="d-flex justify-content-center">
+            {{ page }} / {{ totalPages }}
         </div>
     </div>
 </main>
@@ -35,4 +42,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
     integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
     crossorigin="anonymous"></script>
-<script src="/src/public/index.js"></script>
+<script src="/index.js"></script>

@@ -11,7 +11,6 @@ const cartsSchema = new mongoose.Schema([
       default: 0,
     },
     products: {
-      _id: false,
       type: [
         {
           products: {
