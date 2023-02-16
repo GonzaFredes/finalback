@@ -14,6 +14,19 @@
                 </div>
             </div>
         </div>
+        <div id="paginacion">
+            {{#if hasPrevPage}}
+            <button >Anterior</button>
+            {{else}}
+            <button >Anterior</button>
+            {{/if}}
+            <p>2</p>
+            {{#if hasNextPage}}
+            <button >Siguiente</button>
+            {{else}}
+            <button >Siguiente</button>
+            {{/if}}
+        </div>
         {{/each}}
     </div>
 </main>

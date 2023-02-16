@@ -1,6 +1,5 @@
-const Products = require("../dao/mongoManager/BdProductManager");
 const BdCartManager = require("../dao/mongoManager/BdCartManager");
-const { find } = require("../dao/models/products.model");
+const BdProductManager = require("../dao/mongoManager/BdProductManager");
 
 
 const createCarts = async (req, res) => {
@@ -8,7 +7,6 @@ const createCarts = async (req, res) => {
   const Createcart = await BdCartManager.CreateCarts(cart);
   if (!Createcart.error) {
     res.json(Createcart)
-
   } else {
     res.json(Createcart)
   }
@@ -16,7 +14,6 @@ const createCarts = async (req, res) => {
 
 const bdgetCartId = async (req, res) => {
   const id = req.params.cid
-  console.log(id)
   const cart = await BdCartManager.getCartsId(id);
   if (!cart.error) {
     res.json(cart)
@@ -36,7 +33,7 @@ const bdgetCarts = async (req, res) => {
 
 const addProductToCart = async (req, res) => {
   const { cid, pid } = req.params
-  const product = await Products.getProductId(pid)
+  const product = await BdProductManager.getProductId(pid)
 
   if (!product) {
     return res.status(400).json({
@@ -51,7 +48,7 @@ const addProductToCart = async (req, res) => {
     const newCart = {
       priceTotal: product.price,
       quantityTotal: 1,
-      products: [{id: product.id, title: product.title,description: product.description,price: product.price,quantity: 1}],
+      products: [{ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 }], //VER ESTO
       username: cid
     }
 
@@ -66,17 +63,20 @@ const addProductToCart = async (req, res) => {
   const findProduct = cart.products.find((product) => product.id === pid);
 
   if (!findProduct) {
-    cart.products.push({id:product.id, title: product.title, description: product.description,price:product.price, quantity: 1})
+    cart.products.push({ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 })
     cart.quantity = cart.quantity + 1
-    // cart.priceTotal = cart.products.reduce(())
-
-    const cartToUpdate = await BdCartManager.updateToCart(cart)
-
-    return res.status(201).json({
-      msg: `Producto agregado al carrito: ${cid}`,
-      cart: cartToUpdate,
-    })
+    cart.priceTotal = cart.priceTotal + product.price
+  } else {
+    findProduct.quantity++;
+    cart.priceTotal = cart.products.reduce((acumulador, total) => acumulador + (product.price * total.quantity), 0);
   }
+  cart.quantityTotal = cart.quantityTotal + 1;
+  const cartToUpdate = await BdCartManager.updateToCart(cart)
+
+  return res.status(201).json({
+    msg: `Producto agregado al carrito: ${cid}`,
+    cart: cartToUpdate,
+  })
 };
 
 const deleteProductToCart = async (req, res) => {
@@ -87,20 +87,17 @@ const deleteProductToCart = async (req, res) => {
   if (!findProductTocart) {
     return res.status(400).json({
       msg: `El producto con el id:${pid} no existe`,
-      ok: false,
     });
   } else {
     if (findProductTocart.quantity === 1) {
-      const index = Cart.products.findIndex((prod) => prod.id === pid);
-      Cart.products.splice(index, 1);
+      Cart.products = Cart.products.filter((prod) => prod.id !== pid);
     } else {
       findProductTocart.quantity--;
+      Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + (total.price * total.quantity), 0);
     }
     Cart.quantityTotal = Cart.quantityTotal - 1;
-    const total = Cart.products.reduce((acumulador, total) => acumulador + total.price * total.quantity, 0);
-    Cart.priceTotal = total;
     const cartToUpdate = await BdCartManager.updateToCart(Cart);
-    return res.status(200).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate });
+    return res.status(201).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate, });
   }
 };
 
@@ -108,31 +105,105 @@ const deleteAllProductsCart = async (req, res) => {
   const { cid, pid } = req.params;
   const Cart = await BdCartManager.getCartsId(cid);
   if (Cart.products.length > 0) {
-    const cartToDelete = Cart.deleteMany({});
-    return {msg: 'Se eliminaron todos los productos del carrito'}
+    Cart.products = [];
+    Cart.quantityTotal = 0
+    Cart.priceTotal = 0
+    const cartToUpdate = await BdCartManager.updateToCart(Cart)
+    return res.status(201).json({
+      msg: 'Se eliminaron todos los productos del carrito',
+      Cart: cartToUpdate
+    })
   } else {
-    return {msg: 'Este carrito no tiene productos para eliminar'};
+    return { msg: 'Este carrito no tiene productos para eliminar' };
   }
 }
 
 const updateCart = async (req, res) => {
-  const cartToUpdate = await BdCartManager.updateToCart(Cart);
+  const { cid } = req.params;
+  const body = req.body;
+  const Cart = await Carts.getCartsId(cid);
 
-//PUT api/carts/:cid deberá actualizar el carrito con un arreglo de productos con el formato especificado arriba.
+  if (!Cart) {
+    return res.status(200).json({
+      msg: 'Carrito no encontrado',
+    });
+  }
+  Cart.products = [];
+  Cart.cantidadTotal = 0;
+  Cart.totalPrice = 0;
+
+  const product = await BdProductManager.getProductId(body.id);
+
+  if (!product) {
+    return res.status(400).json({
+      msg: `El producto con el id ${pid} no existe`,
+      ok: false,
+    });
+  }
+  Cart.products.push({ id: product.id, quantity: body.quantity })
+
+  Cart.quantityTotal = body.quantity;
+  Cart.priceTotal = product.price * body.quantity;
+
+  const cartToUpdate = await BdCartManager.updateCartProducts(Cart);
+
+  return res.status(201).json({
+    msg: 'Producto agregado al carrito: ${cid}',
+    cart: cartToUpdate,
+  });
 }
 
 const updateQuantityOnCart = async (req, res) => {
-  updateQuantityToCart = async (quantity) => {
-    try {
-        const cart = await cartsModel.findOneAndUpdate({quantity})
+  const { cid, pid, } = req.params;
+  const { quantity: quantity } = req.body;
+  const Cart = await BdCartManager.getCartsId(cid);
+  const product = await BdProductManager.getProductId(pid);
+  if (!Cart) {
+    return res.status(400).json({
+      msg: "Carrito no encontrado",
+      ok: false,
+    })
+  }
 
-    } catch (error) {
-        return {msg: 'Error al actualizar la cantidad carrito'}
+  const findProductTocart = Cart.products.find((prod) => prod.id === pid);
+
+  if (!findProductTocart) {
+    return res.status(400).json({
+      msg: "Producto no encontrado",
+      ok: false,
+    })
+  }
+
+  if (quantity == undefined) {
+    return res.status(400).json({
+      msg: "Agregue cantidad a actualizar",
+      ok: false,
+    })
+  } else {
+    if (quantity < 0) {
+      return res.status(400).json({
+        msg: "La cantidad debe ser mayor o igual a  0",
+        ok: false,
+      })
+
+    } else {
+      findProductTocart.quantity = quantity
+      if (findProductTocart.quantity > quantity) {
+        cart.priceTotal = cart.priceTotal - (product.price * findProductcart.quantity)
+      } else {
+        cart.priceTotal = cart.priceTotal + (product.price * findProductcart.quantity)
+      }
     }
-};
-//Debe actualizar solamente la cantidad de ejemplares de un mismo producto que le pase por req.body, osea en el boton agregar producto de las cards
-}
+  }
+  Cart.quantityTotal = Cart.products.reduce((acumulador, total) => acumulador + quantity, 0)
+  Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + (total.price * total.quantity), 0)
+  const cartToUpdate = await BdCartManager.updateToCart(Cart)
+  return res.status(201).json({
+    msg: "Cantidad actualizada",
+    Cart: cartToUpdate
+  })
 
+}
 
 module.exports = {
   createCarts,

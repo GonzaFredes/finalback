@@ -16,7 +16,6 @@
     "handlebars": "^4.7.7",
     "mongoose": "^6.9.0",
     "mongoose-paginate-v2": "^1.7.1",
-    "mongose": "^0.0.2-security",
     "populate": "^5.0.1",
     "socket.io": "^4.5.4"
   },
