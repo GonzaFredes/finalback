@@ -48,7 +48,7 @@ const addProductToCart = async (req, res) => {
     const newCart = {
       priceTotal: product.price,
       quantityTotal: 1,
-      products: [{ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 }], //VER ESTO
+      products: [{ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 }],
       username: cid
     }
 
@@ -145,7 +145,7 @@ const updateCart = async (req, res) => {
   Cart.quantityTotal = body.quantity;
   Cart.priceTotal = product.price * body.quantity;
 
-  const cartToUpdate = await BdCartManager.updateCartProducts(Cart);
+  const cartToUpdate = await BdCartManager.updateToCart(Cart);
 
   return res.status(201).json({
     msg: 'Producto agregado al carrito: ${cid}',
@@ -189,20 +189,19 @@ const updateQuantityOnCart = async (req, res) => {
     } else {
       findProductTocart.quantity = quantity
       if (findProductTocart.quantity > quantity) {
-        cart.priceTotal = cart.priceTotal - (product.price * findProductcart.quantity)
+        cart.priceTotal = cart.priceTotal - (product.price * findProductTocart.quantity)
       } else {
-        cart.priceTotal = cart.priceTotal + (product.price * findProductcart.quantity)
+        cart.priceTotal = cart.priceTotal + (product.price * findProductTocart.quantity)
       }
     }
   }
-  Cart.quantityTotal = Cart.products.reduce((acumulador, total) => acumulador + quantity, 0)
+  Cart.quantityTotal = Cart.products.reduce((acumulador) => acumulador + quantity, 0)
   Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + (total.price * total.quantity), 0)
   const cartToUpdate = await BdCartManager.updateToCart(Cart)
   return res.status(201).json({
     msg: "Cantidad actualizada",
     Cart: cartToUpdate
   })
-
 }
 
 module.exports = {
