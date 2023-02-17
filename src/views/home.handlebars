@@ -14,7 +14,7 @@
             </div>
         </div>
         {{/each}}
-        <div class="d-flex justify-content-center ">
+        <div class="d-flex justify-content-center align-items-center">
             {{#if hasPrevPage}}
             <button id="prev">Anterior</button>
             {{else}}
@@ -22,9 +22,9 @@
             {{/if}}
             <p id="page"> {{page}} </p>
             {{#if hasNextPage}}
-            <button disabled id="next">Siguiente</button>
-            {{else}}
             <button id="next">Siguiente</button>
+            {{else}}
+            <button disabled id="next">Siguiente</button>
             {{/if}}
         </div>
         {{!-- <div>
