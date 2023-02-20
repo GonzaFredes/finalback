@@ -5,6 +5,8 @@ const router = Router();
 
 router.get('/products', viewControllers.views);
 router.get('/carts/:cid', viewControllers.viewCart);
-
+router.get('/', viewControllers.login);
+router.get('/register', viewControllers.register);
+router.get('/profile', viewControllers.profile);
 
 module.exports = router;

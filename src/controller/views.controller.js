@@ -17,7 +17,37 @@ const viewCart = async (req, res) => {
     res.render('cart', {carts: view})
 }
 
+const login = async (req, res) => {
+    // if(req.session.user) {
+    //     res.render('profile',{name:req.session.user.first_name});
+    // } else {
+    //     res.render('login');
+    // }
+    res.render('login')
+}
+
+const register = async (req, res) => {
+    // if(req.session.user) {
+    //     res.render('profile',{name:req.session.user.first_name});
+    // } else {
+    //     res.render('register');
+    // }
+    res.render('register')
+}
+
+const profile = async (req, res) => {
+    // if(req.session.user) {
+    //     res.render('profile',{name:req.session.user.first_name});
+    // } else {
+    //     res.render('login');
+    // }
+    res.render('profile')
+}
+
 module.exports = {
     views,
     viewCart,
+    login,
+    register,
+    profile,
 }
