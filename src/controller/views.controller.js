@@ -12,7 +12,6 @@ const views = async (req, res) => {
 const viewCart = async (req, res) => {
     const {cid} = req.params
     const carts = await BdCartManager.renderCartId(cid);
-    // const view = carts.map((carts)=>({products: carts.products}));
     const view = carts.map((carts) => ({ priceTotal: carts.priceTotal, quantityTotal: carts.quantityTotal}));
     res.render('cart', {carts: view})
 }
@@ -44,10 +43,16 @@ const profile = async (req, res) => {
     res.render('profile')
 }
 
+const logout = async (req, res) => {
+    req.session.destroy();
+    res.send("Session has been destroyed")
+}
+
 module.exports = {
     views,
     viewCart,
     login,
     register,
     profile,
+    logout,
 }

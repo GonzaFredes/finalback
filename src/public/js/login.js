@@ -4,7 +4,6 @@ const email = document.getElementById('email');
 const password = document.getElementById('password');
 
 formLogin.addEventListener('submit', (e) => {
-    console.log({ email: email.value, password: password.value })
     e.preventDefault();
     fetch('/api/session/login', {
         method: 'POST',

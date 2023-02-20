@@ -25,6 +25,17 @@ server.use(express.static(__dirname +'/public'));
 server.use(express.json())
 server.use(express.urlencoded({extended:true}))
 
+//session para cookies del login
+server.use(session({
+  store: MongoConnect.create({
+    mongoUrl: 'mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority',
+    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
+  }),
+  secret: 'clavesecreta',
+  resave: true,
+  saveUninitialized: true,
+}));
+
 //rutas
 server.use(routerViews);
 server.use("/api/session",routerSession);
@@ -47,15 +58,5 @@ console.log('Se ah conectado a la base de datos correctamente');
 
 test();
 
-//session para cookies del login
-server.use(session({
-  store: MongoConnect.create({
-    mongoUrl: 'mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority',
-    mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
-  }),
-  secret: 'clavesecreta',
-  resave: true,
-  saveUninitialized: true,
-}));
 
 
