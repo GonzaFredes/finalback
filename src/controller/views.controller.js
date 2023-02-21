@@ -6,7 +6,8 @@ const views = async (req, res) => {
     const page = req.query.page
     const products = await ProductManager.getProduct(page);
     const view = products.docs.map((products) => ({ title: products.title, description: products.description, price: products.price, stock: products.stock, thumbnail: products.thumbnail}));
-    res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage});
+    res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user.first_name,
+        lastName: req.session.user.last_name});
 }
 
 const viewCart = async (req, res) => {
@@ -40,12 +41,17 @@ const profile = async (req, res) => {
     // } else {
     //     res.render('login');
     // }
-    res.render('profile')
+    res.render('profile', {
+        name: req.session.user.first_name,
+        lastName: req.session.user.last_name,
+        email: req.session.user.email,
+    })
 }
 
 const logout = async (req, res) => {
     req.session.destroy();
-    res.send("Session has been destroyed")
+    res.render('logout')
+    // res.send("Session has been destroyed");
 }
 
 module.exports = {
