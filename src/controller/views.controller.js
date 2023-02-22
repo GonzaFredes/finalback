@@ -6,8 +6,12 @@ const views = async (req, res) => {
     const page = req.query.page
     const products = await ProductManager.getProduct(page);
     const view = products.docs.map((products) => ({ title: products.title, description: products.description, price: products.price, stock: products.stock, thumbnail: products.thumbnail}));
-    res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user.first_name,
-        lastName: req.session.user.last_name});
+    if(req.session.user) {
+        res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user.first_name,
+            lastName: req.session.user.last_name});
+    } else {
+        res.render('login');
+    }
 }
 
 const viewCart = async (req, res) => {
@@ -18,40 +22,37 @@ const viewCart = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    // if(req.session.user) {
-    //     res.render('profile',{name:req.session.user.first_name});
-    // } else {
-    //     res.render('login');
-    // }
-    res.render('login')
+    if(req.session.user) {
+        res.render('profile',{name:req.session.user.first_name});
+    } else {
+        res.render('login');
+    }
 }
 
 const register = async (req, res) => {
-    // if(req.session.user) {
-    //     res.render('profile',{name:req.session.user.first_name});
-    // } else {
-    //     res.render('register');
-    // }
-    res.render('register')
+    if(req.session.user) {
+        res.render('profile',{name:req.session.user.first_name});
+    } else {
+        res.render('register');
+    }
 }
 
 const profile = async (req, res) => {
-    // if(req.session.user) {
-    //     res.render('profile',{name:req.session.user.first_name});
-    // } else {
-    //     res.render('login');
-    // }
-    res.render('profile', {
-        name: req.session.user.first_name,
-        lastName: req.session.user.last_name,
-        email: req.session.user.email,
-    })
+    if(req.session.user) {
+        res.render('profile', {
+            name: req.session.user.first_name,
+            lastName: req.session.user.last_name,
+            email: req.session.user.email,
+            age: req.session.user.age
+        })
+    } else {
+        res.render('login',);
+    }
 }
 
 const logout = async (req, res) => {
     req.session.destroy();
-    res.render('logout')
-    // res.send("Session has been destroyed");
+    res.render('logout');
 }
 
 module.exports = {

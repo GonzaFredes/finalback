@@ -140,3 +140,23 @@ input {
     align-items: center;
     justify-content: center;
 }
+
+#perfil {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#perfilDatos {
+    background-color: black;
+    color: white;
+    width: 300px;
+    height: 300px;
+    margin-top: 3rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#perfilDatos p {
+    margin-top: 1rem;
+}
