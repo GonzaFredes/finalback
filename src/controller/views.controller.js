@@ -55,6 +55,14 @@ const logout = async (req, res) => {
     res.render('logout');
 }
 
+const forgot = async (req, res) => {
+    if (req.session.user) {
+        res.render ('profile', {name:req.session.user.first_name});
+    } else {
+        res.render ('forgot-password');
+    }
+}
+
 module.exports = {
     views,
     viewCart,
@@ -62,4 +70,5 @@ module.exports = {
     register,
     profile,
     logout,
+    forgot,
 }

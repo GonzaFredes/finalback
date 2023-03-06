@@ -9,12 +9,16 @@ const session = require('express-session');
 const MongoConnect = require ('connect-mongo');
 const routerViews = require('./routes/views.route');
 const routerSession = require('./routes/session.router');
+const InitPassport = require('./utils/passport.config');
+const passport = require('passport');
 
 mongoose.set('strictQuery', false)
 
 server.listen(8080, ()=> {
     console.log('Servidor listo en puerto http://localhost:8080/')
 });
+
+
 
 //handlerbars
 server.engine('handlebars', handlebars.engine());
@@ -35,6 +39,10 @@ server.use(session({
   resave: true,
   saveUninitialized: true,
 }));
+
+InitPassport ();
+server.use (passport.initialize());
+server.use (passport.session());
 
 //rutas
 server.use(routerViews);
