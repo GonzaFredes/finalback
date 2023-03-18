@@ -7,8 +7,8 @@ const views = async (req, res) => {
     const products = await ProductManager.getProduct(page);
     const view = products.docs.map((products) => ({ title: products.title, description: products.description, price: products.price, stock: products.stock, thumbnail: products.thumbnail}));
     if(req.session.user) {
-        res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user.first_name,
-            lastName: req.session.user.last_name});
+        res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user._doc.first_name,
+            lastName: req.session.user._doc.last_name});
     } else {
         res.render('login');
     }
@@ -22,8 +22,12 @@ const viewCart = async (req, res) => {
 }
 
 const login = async (req, res) => {
+    const page = req.query.page
+    const products = await ProductManager.getProduct(page);
+    const view = products.docs.map((products) => ({ title: products.title, description: products.description, price: products.price, stock: products.stock, thumbnail: products.thumbnail}));
     if(req.session.user) {
-        res.render('profile',{name:req.session.user.first_name});
+        res.render('home', { products: view, hasPrevPage: products.hasPrevPage, hasNextPage: products.hasNextPage, page: products.page, totalPages: products.totalPages, prevPage: products.prevPage, nextPage: products.nextPage, name: req.session.user._doc.first_name,
+            lastName: req.session.user._doc.last_name});
     } else {
         res.render('login');
     }
@@ -31,7 +35,12 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     if(req.session.user) {
-        res.render('profile',{name:req.session.user.first_name});
+        res.render('profile',{
+            name: req.session.user._doc.first_name,
+            lastName: req.session.user._doc.last_name,
+            email: req.session.user._doc.email,
+            age: req.session.user._doc.age
+        });
     } else {
         res.render('register');
     }
@@ -40,10 +49,10 @@ const register = async (req, res) => {
 const profile = async (req, res) => {
     if(req.session.user) {
         res.render('profile', {
-            name: req.session.user.first_name,
-            lastName: req.session.user.last_name,
-            email: req.session.user.email,
-            age: req.session.user.age
+            name: req.session.user._doc.first_name,
+            lastName: req.session.user._doc.last_name,
+            email: req.session.user._doc.email,
+            age: req.session.user._doc.age
         })
     } else {
         res.render('login',);

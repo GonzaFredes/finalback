@@ -43,5 +43,20 @@ router.post('/forgot-password', async (req, res) => {
     }
 })
 
+router.get('/current', async (req,res) =>{
+    const user = req.session.user;
+    if (user) { res.send (user);
+        // res.send (user), {
+        //     name: req.session.user._doc.first_name,
+        //     lastName: req.session.user._doc.last_name,
+        //     email: req.session.user._doc.email,
+        //     age: req.session.user._doc.age,
+        //     rol: req.session.user._doc.role
+        // };
+    } else {
+            res.render('login',);
+    }    
+})
+
 
 module.exports = router;

@@ -19,7 +19,6 @@ server.listen(8080, ()=> {
 });
 
 
-
 //handlerbars
 server.engine('handlebars', handlebars.engine());
 server.set('views', __dirname + '/views');
