@@ -5,7 +5,7 @@ const Carts = new CartManager(__dirname + '/../../assets/carts.json');
 
 const createCarts = async (req, res) => {
     const resp = await Carts.CreateCarts();
-    res.json({ msg: "Carrito Creado con Excito ", id: resp })
+    res.json({ msg: "Carrito Creado con éxito ", id: resp })
 }
 
 const getCarts = async (req, res) => {
