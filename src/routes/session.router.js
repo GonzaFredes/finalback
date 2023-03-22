@@ -10,7 +10,7 @@ const router = Router();
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     if (email == 'adminCoder@coder.com' && password == '123456') {
-        const userAdmin = { first_name: 'Admin', last_name: 'Coder', age: '25', email, password, rol: 'admin' };
+        const userAdmin = { first_name: 'Admin', last_name: 'Coder', age: '25', email, password, role: 'admin' };
         req.session.user = userAdmin;
     }
     const user = await UsersModel.findOne({ email });
@@ -45,21 +45,6 @@ router.post('/forgot-password', async (req, res) => {
 })
 
 router.get('/current', viewControllers.current);
-
-// router.get('/current', async (req,res) =>{
-//     const user = req.session.user;
-//     if (user) {
-//         res.render ('current'), {
-//             name: req.session.user._doc.first_name,
-//             lastName: req.session.user._doc.last_name,
-//             email: req.session.user._doc.email,
-//             age: req.session.user._doc.age,
-//             rol: req.session.user._doc.role
-//         };
-//     } else {
-//             res.render('login',);
-//     }
-// })
 
 
 module.exports = router;
