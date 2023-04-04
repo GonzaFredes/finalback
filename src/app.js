@@ -1,5 +1,6 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
+
 const productsRouteBd = require('./routes/products.router.bd')
 const cartsRouteBd = require('./routes/carts.router.bd')
 const chatsRouter = require('./routes/chats.router')
@@ -11,11 +12,13 @@ const routerViews = require('./routes/views.route');
 const routerSession = require('./routes/session.router');
 const InitPassport = require('./utils/passport.config');
 const passport = require('passport');
+const { mongoURL, adminName, NODE, PORT } = require('./config/config');
 
 mongoose.set('strictQuery', false)
 
+
 server.listen(8080, ()=> {
-    console.log('Servidor listo en puerto http://localhost:8080/')
+    console.log(PORT);
 });
 
 
