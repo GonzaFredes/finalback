@@ -1,8 +1,10 @@
 const Products = require("../dao/mongoManager/BdProductManager");
+const { ProductRepository } = require("../service/index.repository");
 
 const getProductsBd = async (req, res) => {
   const {limit, page,sort, ...query} = req.query;
-       const products = await Products.getProduct(page,limit,sort,query);
+      //  const products = await Products.getProduct(page,limit,sort,query);
+       const products = await ProductRepository.get (page,limit,sort,query);
        const {docs} = products;
        const state =  products ? "success" : "error";
        if (products){
@@ -14,7 +16,8 @@ const getProductsBd = async (req, res) => {
 
 const addProductBd = async (req, res)=>{
   const product = req.body;
-    const newproduct = await Products.addProduct(product);
+    // const newproduct = await Products.addProduct(product);
+    const newproduct = await ProductRepository.add(product);
     if (newproduct){
       res.json(newproduct)    
     }else{
@@ -24,7 +27,8 @@ const addProductBd = async (req, res)=>{
 
 const getProductIdBd = async (req, res)=>{
   const id = req.params.pid 
-  const getProductId = await Products.getProductId(id);
+  // const getProductId = await Products.getProductId(id);
+  const getProductId = await ProductRepository.getId(id);
   if (getProductId){
     res.json(getProductId)      
   }else{
@@ -35,7 +39,8 @@ const getProductIdBd = async (req, res)=>{
 const UpdateProductBd = async (req, res)=>{
   const id = req.params.pid 
   const product = req.body
-  const UpdateProductId = await Products.UpdateProduct(id, product);
+  // const UpdateProductId = await Products.UpdateProduct(id, product);
+  const UpdateProductId = await ProductRepository.update(id, product);
   if (UpdateProductId){
      res.json(UpdateProductId)      
   }else{
@@ -45,7 +50,8 @@ const UpdateProductBd = async (req, res)=>{
 
 const deleteProductBd = async (req, res)=>{
   const id = req.params.pid 
-    const deleteproduct = await Products.DeleteProductId(id);
+    // const deleteproduct = await Products.DeleteProductId(id);
+    const deleteproduct = await ProductRepository.delete(id);
     if (deleteproduct){
       res.json(deleteproduct)      
     }else{
