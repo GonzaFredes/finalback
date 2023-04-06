@@ -1,3 +1,4 @@
+const { mongoURL, adminName, NODE, PORT } = require('./config/config');
 const express = require('express');
 const handlebars = require('express-handlebars');
 
@@ -12,7 +13,6 @@ const routerViews = require('./routes/views.route');
 const routerSession = require('./routes/session.router');
 const InitPassport = require('./utils/passport.config');
 const passport = require('passport');
-const { mongoURL, adminName, NODE, PORT } = require('./config/config');
 
 mongoose.set('strictQuery', false)
 
