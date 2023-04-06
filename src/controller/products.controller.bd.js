@@ -39,8 +39,8 @@ const getProductIdBd = async (req, res)=>{
 const UpdateProductBd = async (req, res)=>{
   const id = req.params.pid 
   const product = req.body
-  // const UpdateProductId = await Products.UpdateProduct(id, product);
-  const UpdateProductId = await ProductRepository.update(id, product);
+  const UpdateProductId = await Products.UpdateProduct(id, product);
+  // const UpdateProductId = await ProductRepository.update(id, product);
   if (UpdateProductId){
      res.json(UpdateProductId)      
   }else{
@@ -50,8 +50,8 @@ const UpdateProductBd = async (req, res)=>{
 
 const deleteProductBd = async (req, res)=>{
   const id = req.params.pid 
-    // const deleteproduct = await Products.DeleteProductId(id);
-    const deleteproduct = await ProductRepository.delete(id);
+    const deleteproduct = await Products.DeleteProductId(id);
+    // const deleteproduct = await ProductRepository.delete(id);
     if (deleteproduct){
       res.json(deleteproduct)      
     }else{
