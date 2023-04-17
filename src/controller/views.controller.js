@@ -52,7 +52,8 @@ const profile = async (req, res) => {
             name: req.session.user._doc.first_name,
             lastName: req.session.user._doc.last_name,
             email: req.session.user._doc.email,
-            age: req.session.user._doc.age
+            age: req.session.user._doc.age,
+            role: req.session.user._doc.role,
         })
     } else {
         res.render('login',);
@@ -66,7 +67,10 @@ const logout = async (req, res) => {
 
 const forgot = async (req, res) => {
     if (req.session.user) {
-        res.render ('profile', {name:req.session.user.first_name});
+        res.render ('profile', {name:req.session.user._doc.first_name,lastName: req.session.user._doc.last_name,
+            email: req.session.user._doc.email,
+            age: req.session.user._doc.age,
+            role: req.session.user._doc.role});
     } else {
         res.render ('forgot-password');
     }
@@ -79,7 +83,7 @@ const current = async (req, res) => {
             lastName: req.session.user._doc.last_name,
             email: req.session.user._doc.email,
             age: req.session.user._doc.age,
-            rol: req.session.user._doc.role
+            role: req.session.user._doc.role
         })
     } else {
         res.render ('login');

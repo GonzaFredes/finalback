@@ -13,6 +13,7 @@ const routerViews = require('./routes/views.route');
 const routerSession = require('./routes/session.router');
 const InitPassport = require('./utils/passport.config');
 const passport = require('passport');
+const userRouter = require('./routes/user.routes.bd');
 
 mongoose.set('strictQuery', false)
 
@@ -54,6 +55,7 @@ server.use("/api/session",routerSession);
 server.use("/api/productsBd/", productsRouteBd );
 server.use("/api/cartsBd/", cartsRouteBd );
 server.use("/api/chats/", chatsRouter );
+server.use("/api/user/", userRouter);
 
 // conexion con mongodb para productos
 const test = async () => {

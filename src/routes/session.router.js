@@ -4,6 +4,7 @@ const { hashPassword, comparePassword } = require('../utils/bcrypt');
 const passport = require ('passport');
 const { STRATEGY_REGISTER } = require('../utils/constants');
 const viewControllers = require('../controller/views.controller');
+const { mdlwOnlyAdmin } = require('../utils/middleware');
 
 const router = Router();
 
@@ -44,7 +45,7 @@ router.post('/forgot-password', async (req, res) => {
     }
 })
 
-router.get('/current', viewControllers.current);
+router.get('/current',mdlwOnlyAdmin,viewControllers.current);
 
 
 module.exports = router;
