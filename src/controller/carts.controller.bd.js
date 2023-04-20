@@ -1,3 +1,4 @@
+const { v4 } = require("uuid");
 const BdCartManager = require("../dao/mongoManager/BdCartManager");
 const BdProductManager = require("../dao/mongoManager/BdProductManager");
 
@@ -24,6 +25,44 @@ const bdgetCartId = async (req, res) => {
 
 const bdgetCarts = async (req, res) => {
   const cart = await BdCartManager.getCarts();
+  if (!cart.error) {
+    res.json(cart)
+  } else {
+    res.json(cart)
+  }
+}
+
+const purchase = async (req, res) => {
+  const id = req.params.cid
+  const carts = await BdCartManager.getCartsId(id);
+
+  const cartsTicket = []
+  const cartsReject = []
+
+  for (let i = 0; i < carts.length; i++) {
+    const p = carts[i];
+    const productBd = await BdProductManager.getProductId(p.id)
+
+    if(productBd.stock >= p.quantity){
+      cartsTicket.push(productBd)
+    }else{
+      cartsReject.push(productBd)
+    }
+  }
+  const total = cartsTicket.reduce((acc,p)=>p.price+acc,0)
+  
+  // const cartsFiltered = carts.products.filter(async p=>{          //ESTO ES OTRA FORMA DE HACERLO PERO ESTA INCOMPLETA
+  //   const productBd = await BdProductManager.getProductId(p.id)
+  //   if (productBd.stock >= p.quantity) {
+      
+  //     return true
+  //   } else {
+
+  //     return false
+  //   }
+  // })
+
+  const cart = await BdCartManager.purchase({code:v4(),amount:total,purchaser:id});
   if (!cart.error) {
     res.json(cart)
   } else {
@@ -82,6 +121,7 @@ const addProductToCart = async (req, res) => {
 const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
   const Cart = await BdCartManager.getCartsId(cid);
+  JSON.stringify(Cart)
   const findProductTocart = Cart.products.find((prod) => prod.id === pid)
 
   if (!findProductTocart) {
@@ -93,11 +133,16 @@ const deleteProductToCart = async (req, res) => {
       Cart.products = Cart.products.filter((prod) => prod.id !== pid);
     } else {
       findProductTocart.quantity--;
-      Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + (total.price * total.quantity), 0);
     }
+    const product = await BdProductManager.getProductId(pid);
     Cart.quantityTotal = Cart.quantityTotal - 1;
+    const total = Cart.products.reduce((acumulador, total) => acumulador + product.price * total.quantity, 0);
+    Cart.priceTotal = total;
     const cartToUpdate = await BdCartManager.updateToCart(Cart);
-    return res.status(201).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate, });
+    return res.status(200).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate });
+    // Cart.quantityTotal = Cart.quantityTotal - 1;
+    // const cartToUpdate = await BdCartManager.updateToCart(Cart);
+    // return res.status(201).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate, });
   }
 };
 
@@ -184,19 +229,18 @@ const updateQuantityOnCart = async (req, res) => {
       return res.status(400).json({
         msg: "La cantidad debe ser mayor o igual a  0",
         ok: false,
-      })
-
+      });
     } else {
       findProductTocart.quantity = quantity
       if (findProductTocart.quantity > quantity) {
-        cart.priceTotal = cart.priceTotal - (product.price * findProductTocart.quantity)
+        cart.priceTotal = cart.priceTotal - product.price * findProductTocart.quantity
       } else {
-        cart.priceTotal = cart.priceTotal + (product.price * findProductTocart.quantity)
+        cart.priceTotal = cart.priceTotal + product.price * findProductTocart.quantity
       }
     }
   }
-  Cart.quantityTotal = Cart.products.reduce((acumulador) => acumulador + quantity, 0)
-  Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + (total.price * total.quantity), 0)
+  Cart.priceTotal = Cart.products.reduce((acumulador, total) => acumulador + total.price * total.quantity, 0)
+  Cart.quantityTotal = Cart.products.reduce((Acumulador,ProductoActual) => Acumulador + ProductoActual.quantity, 0)
   const cartToUpdate = await BdCartManager.updateToCart(Cart)
   return res.status(201).json({
     msg: "Cantidad actualizada",
@@ -213,4 +257,5 @@ module.exports = {
   deleteAllProductsCart,
   updateCart,
   updateQuantityOnCart,
+  purchase
 }

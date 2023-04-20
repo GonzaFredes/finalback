@@ -67,7 +67,7 @@ const InitPassport = () => {
         try {
             const userExist = await BdSessionManager.getEmail({ email: username });
             // const userExist = await UsersModel.findOne({ email: username });
-            const isVadidPassword = await comparePassword(password, user.password);
+            const isVadidPassword = await comparePassword(password, userExist.password);
             if (userExist && isVadidPassword) {
                 done(null, userExist);
             } else {

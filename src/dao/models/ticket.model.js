@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-import { v4 as uuidV4 } from 'uuid';
 
 const TicketSchema = new mongoose.Schema({
   code: {
-    type: uuidV4(),
+    type: String,
     required: true,
     unique: true,
   },

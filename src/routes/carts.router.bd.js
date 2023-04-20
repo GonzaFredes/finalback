@@ -14,5 +14,7 @@ router.post('/:cid/product/:pid',mdlwUserSession, cartsControllerBd.addProductTo
 router.delete('/:cid/product/:pid', cartsControllerBd.deleteProductToCart);
 router.put('/:cid/product/:pid',cartsControllerBd.updateQuantityOnCart)
 
+router.get ('/:cid/purchase',cartsControllerBd.purchase)
+
 
 module.exports = router;

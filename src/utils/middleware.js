@@ -21,7 +21,7 @@ const ifUserExists = (req, res, next) => {
 };
 
 const mdlwUserSession = (req,res,next) => {
-    if (req.session.user) {
+    if (!req.session.user) {
         return res.status(401).json({
             status: 'error',
             msg: 'error usuario no autorizado'
