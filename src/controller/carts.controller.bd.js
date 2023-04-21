@@ -32,57 +32,19 @@ const bdgetCarts = async (req, res) => {
   }
 }
 
-const purchase = async (req, res) => {
-  const id = req.params.cid
-  const carts = await BdCartManager.getCartsId(id);
-
-  const cartsTicket = []
-  const cartsReject = []
-
-  for (let i = 0; i < carts.length; i++) {
-    const p = carts[i];
-    const productBd = await BdProductManager.getProductId(p.id)
-
-    if(productBd.stock >= p.quantity){
-      cartsTicket.push(productBd)
-    }else{
-      cartsReject.push(productBd)
-    }
-  }
-  const total = cartsTicket.reduce((acc,p)=>p.price+acc,0)
-  
-  // const cartsFiltered = carts.products.filter(async p=>{          //ESTO ES OTRA FORMA DE HACERLO PERO ESTA INCOMPLETA
-  //   const productBd = await BdProductManager.getProductId(p.id)
-  //   if (productBd.stock >= p.quantity) {
-      
-  //     return true
-  //   } else {
-
-  //     return false
-  //   }
-  // })
-
-  const cart = await BdCartManager.purchase({code:v4(),amount:total,purchaser:id});
-  if (!cart.error) {
-    res.json(cart)
-  } else {
-    res.json(cart)
-  }
-}
-
 const addProductToCart = async (req, res) => {
   const { cid, pid } = req.params
   const product = await BdProductManager.getProductId(pid)
-
+  
   if (!product) {
     return res.status(400).json({
       msg: `El producto con el id ${pid} no existe`,
       ok: false,
     });
   }
-
+  
   const cart = await BdCartManager.getCartsId(cid);
-
+  
   if (!cart) {
     const newCart = {
       priceTotal: product.price,
@@ -90,17 +52,17 @@ const addProductToCart = async (req, res) => {
       products: [{ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 }],
       username: cid
     }
-
+    
     const cartToSave = await BdCartManager.addProductToCarts(newCart);
-
+    
     return res.status(200).json({
       msg: 'Carrito creado con exito',
       cart: cartToSave
     })
   }
-
+  
   const findProduct = cart.products.find((product) => product.id === pid);
-
+  
   if (!findProduct) {
     cart.products.push({ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 })
     cart.quantity = cart.quantity + 1
@@ -111,7 +73,7 @@ const addProductToCart = async (req, res) => {
   }
   cart.quantityTotal = cart.quantityTotal + 1;
   const cartToUpdate = await BdCartManager.updateToCart(cart)
-
+  
   return res.status(201).json({
     msg: `Producto agregado al carrito: ${cid}`,
     cart: cartToUpdate,
@@ -123,7 +85,7 @@ const deleteProductToCart = async (req, res) => {
   const Cart = await BdCartManager.getCartsId(cid);
   JSON.stringify(Cart)
   const findProductTocart = Cart.products.find((prod) => prod.id === pid)
-
+  
   if (!findProductTocart) {
     return res.status(400).json({
       msg: `El producto con el id:${pid} no existe`,
@@ -167,7 +129,7 @@ const updateCart = async (req, res) => {
   const { cid } = req.params;
   const body = req.body;
   const Cart = await Carts.getCartsId(cid);
-
+  
   if (!Cart) {
     return res.status(200).json({
       msg: 'Carrito no encontrado',
@@ -176,9 +138,9 @@ const updateCart = async (req, res) => {
   Cart.products = [];
   Cart.cantidadTotal = 0;
   Cart.totalPrice = 0;
-
+  
   const product = await BdProductManager.getProductId(body.id);
-
+  
   if (!product) {
     return res.status(400).json({
       msg: `El producto con el id ${pid} no existe`,
@@ -186,12 +148,12 @@ const updateCart = async (req, res) => {
     });
   }
   Cart.products.push({ id: product.id, quantity: body.quantity })
-
+  
   Cart.quantityTotal = body.quantity;
   Cart.priceTotal = product.price * body.quantity;
-
+  
   const cartToUpdate = await BdCartManager.updateToCart(Cart);
-
+  
   return res.status(201).json({
     msg: 'Producto agregado al carrito: ${cid}',
     cart: cartToUpdate,
@@ -209,16 +171,16 @@ const updateQuantityOnCart = async (req, res) => {
       ok: false,
     })
   }
-
+  
   const findProductTocart = Cart.products.find((prod) => prod.id === pid);
-
+  
   if (!findProductTocart) {
     return res.status(400).json({
       msg: "Producto no encontrado",
       ok: false,
     })
   }
-
+  
   if (quantity == undefined) {
     return res.status(400).json({
       msg: "Agregue cantidad a actualizar",
@@ -246,6 +208,58 @@ const updateQuantityOnCart = async (req, res) => {
     msg: "Cantidad actualizada",
     Cart: cartToUpdate
   })
+}
+
+const purchase = async (req, res) => {
+  let total = 0;
+  const id = req.params.cid
+  const carts = await BdCartManager.getCartsId(id);
+
+  const cartsTicket = []
+  const cartsReject = []
+
+  for (let i = 0; i < carts.products.length; i++) {
+    const productBd = await BdProductManager.getProductId(carts.products[i].id);
+
+    if (productBd.stock >= carts.products[i].quantity) {
+      const newproduct = {
+        title: productBd.title,
+        description: productBd.description,
+        code: productBd.code,
+        price: productBd.price,
+        status: productBd.status,
+        stock: productBd.stock - carts.products[i].quantity,
+        category: productBd.category,
+        thumbnail: productBd.thumbnail,
+      };
+      await BdProductManager.UpdateProduct(productBd.id, newproduct);
+      total += productBd.price * carts.products[i].quantity;
+      cartsTicket.push(carts.products); //para mostrar los productos que se agregaron en el ticket
+      console.log('ok');
+    } else (productBd.stock <= carts.products[i].quantity); {
+      cartsReject.push(productBd); //muestra los productos que no se pudieron agregar por falta de stock
+      console.log('No se pudieron agregar los siguientes productos,revise cantidad',cartsReject);
+    }
+  }
+
+  // for (let i = 0; i < carts.length; i++) {
+  //   const p = carts[i];
+  //   const productBd = await BdProductManager.getProductId(p.id)
+
+  //   if(productBd.stock >= p.quantity){
+  //     cartsTicket.push(productBd)
+  //   }else{
+  //     cartsReject.push(productBd)
+  //   }
+  // }
+  // const total = cartsTicket.reduce((acc,p)=>p.price+acc,0)
+
+  const cart = await BdCartManager.purchase({code:v4(),amount:total,purchaser:id,products:cartsTicket}); //agrega los campos a mostrar en el ticket
+  if (!cart.error) {
+    res.json(cart)
+  } else {
+    res.json(cart)
+  }
 }
 
 module.exports = {

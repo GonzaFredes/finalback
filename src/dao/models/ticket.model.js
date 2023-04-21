@@ -17,6 +17,9 @@ const TicketSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'carts',
   },
+  products: {
+    type: Array,
+  }
 });
 
 const TicketsModel = mongoose.model('tickets', TicketSchema);
