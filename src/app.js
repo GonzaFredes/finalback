@@ -11,9 +11,11 @@ const session = require('express-session');
 const MongoConnect = require ('connect-mongo');
 const routerViews = require('./routes/views.route');
 const routerSession = require('./routes/session.router');
+const routerMocking = require('./routes/mockingproducts.router');
 const InitPassport = require('./utils/passport.config');
 const passport = require('passport');
 const userRouter = require('./routes/user.routes.bd');
+const errorList = require('./utils/errors');
 
 mongoose.set('strictQuery', false)
 
@@ -43,6 +45,8 @@ server.use(session({
   saveUninitialized: true,
 }));
 
+server.use(errorList)
+
 InitPassport ();
 server.use (passport.initialize());
 server.use (passport.session());
@@ -50,6 +54,7 @@ server.use (passport.session());
 //rutas
 server.use(routerViews);
 server.use("/api/session",routerSession);
+server.use("/api/mockingproducts/",routerMocking);
 
 //rutas mongodb
 server.use("/api/productsBd/", productsRouteBd );

@@ -1,4 +1,7 @@
-const productModel = require('../models/products.model')
+const CustomError = require('../../errors/customError');
+const productModel = require('../models/products.model');
+const {INVALID_FILTER} = require ('../../errors/enumErrors');
+const {invalidId} = require('../../utils/creatorMsg')
 
 class BdProductManager {
   constructor() {
@@ -23,12 +26,13 @@ class BdProductManager {
     }
   }
 
-  getProductId = async (id) => {
+  getProductId = async (id, next) => {
     try {
       const getproductId = await productModel.findById(id);
       return getproductId
     } catch (error) {
-      return { msg: "Producto no encontrado" }
+      return next(CustomError.createError({code:401,msg:invalidId(id),typeError:INVALID_FILTER}))
+      // return { msg: "Producto no encontrado" }
     }
   }
 
