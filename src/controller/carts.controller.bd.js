@@ -1,6 +1,7 @@
 const { v4 } = require("uuid");
 const BdCartManager = require("../dao/mongoManager/BdCartManager");
 const BdProductManager = require("../dao/mongoManager/BdProductManager");
+const {mdwLogger} = require("../config/winston")
 
 
 const createCarts = async (req, res) => {
@@ -82,6 +83,7 @@ const addProductToCart = async (req, res) => {
 
 const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
+  req.mdwlLogger = `${cid}`;
   const Cart = await BdCartManager.getCartsId(cid);
   JSON.stringify(Cart)
   const findProductTocart = Cart.products.find((prod) => prod.id === pid)
