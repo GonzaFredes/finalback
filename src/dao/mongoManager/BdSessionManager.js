@@ -17,6 +17,8 @@ class BdSessionManager {
   UserSession = async (id) => {
     return await userModel.findById(id);
   };
+
+  updatePassword = (newPassword, id) => userModel.findByIdAndUpdate(id, { password: newPassword });
 }
 
 module.exports = new BdSessionManager();

@@ -1,7 +1,8 @@
 const { v4 } = require("uuid");
 const BdCartManager = require("../dao/mongoManager/BdCartManager");
 const BdProductManager = require("../dao/mongoManager/BdProductManager");
-const {mdwLogger} = require("../config/winston")
+const {mdwLogger} = require("../config/winston");
+const mailingService = require("../service/mailing.service");
 
 
 const createCarts = async (req, res) => {
@@ -74,6 +75,11 @@ const addProductToCart = async (req, res) => {
   }
   cart.quantityTotal = cart.quantityTotal + 1;
   const cartToUpdate = await BdCartManager.updateToCart(cart)
+
+  setTimeout (() => {
+    mailingService.sendMail({to:req.user.email, subject:`Hola ${req.user.first_name} que esperas? quedan pocas unidades`,
+    html:`<h1>No esperes mas, y ve ahora a comprar tu ${product.title}</h1><a href="http://localhost:8080/">Termina la compra aquí</a>`})
+  },5000)
   
   return res.status(201).json({
     msg: `Producto agregado al carrito: ${cid}`,

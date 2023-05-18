@@ -90,6 +90,13 @@ const current = async (req, res) => {
     }
 }
 
+const fortgotPassword = async (req, res) => {
+    res.render('forgot-password');
+};
+const recoverPassword = async (req, res) => {
+    res.render('recover-password');
+};
+
 module.exports = {
     views,
     viewCart,
@@ -99,4 +106,6 @@ module.exports = {
     logout,
     forgot,
     current,
+    fortgotPassword,
+    recoverPassword,
 }

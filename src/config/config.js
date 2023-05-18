@@ -18,5 +18,11 @@ module.exports = {
     PORT: process.env.PORT,
     mongoURL: process.env.MONGOURL,
     adminName: process.env.ADMINNAME,
-    adminPassword: process.env.ADMINPASSWORD
+    adminPassword: process.env.ADMINPASSWORD,
+    mailing: {
+        user:process.env.USERMAILING, 
+        password:process.env.PASSWORDMAILING,
+    },
+    percistence: process.env.PERCISTENCE,
+    PRIVATE_KEY_JWT: process.env.PRIVATE_KEY_JWT,
 }

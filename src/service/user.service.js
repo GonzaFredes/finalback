@@ -1,10 +1,13 @@
+const userModel = require('../dao/models/users.model');
 
 class UserService {
     constructor(dao) {
         this.dao = dao;
     }
 
-    getUser =() => this.dao.get()
+    getUser = (email) => userModel.find(email);
+
+    // getUser =() => this.dao.get()
 
     insertUser =(user) => this.dao.insert(user)
 

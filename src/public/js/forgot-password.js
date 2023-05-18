@@ -1,14 +1,13 @@
-console.log('forgot-password vista')
 
-const form = document.getElementById ('formulario');
+const form = document.getElementById ('recoverForm');
 
-form.addEventListener ('submit', (e) => {
+form.addEventListener ('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById ('email').value;
-    const password = document.getElementById ('password').value;
-    fetch('/api/session/forgot-password', {
+    await fetch('/api/session/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',},
-        body: JSON.stringify({email,password}),
-    }).then((res) => res.json()).then(data => alert(data)).catch((err) => alert(err));
+        body: JSON.stringify({email}),
+    })
+    //.then((res) => res.json()).then(data => alert(data)).catch((err) => alert(err));
 });
