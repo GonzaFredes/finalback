@@ -1,10 +1,11 @@
+const BdProductManager = require('../dao/mongoManager/BdProductManager');
 
 const mdlwOnlyAdmin = (req,res,next) => {
-    if (req.session.user.role !== 'admin') {
+    if (req.user.role !== 'admin') {
         return res.status(401).json({
             status: 'error',
             msg: 'error usuario no autorizado'
-        })
+        });
     }
     next();
 };
@@ -30,8 +31,19 @@ const mdlwUserSession = (req,res,next) => {
     next();
 };
 
+const adminPremiumPermission = async (req, res, next) => {
+    if (req.user.role !== 'admin' && req.user.role !== 'premium') {
+        return res.status(401).json({
+            status: 'error',
+            msg: 'Usuario no autorizado ',
+        });
+    }
+    next();
+};
+
 module.exports = {
     mdlwOnlyAdmin,
     ifUserExists,
-    mdlwUserSession
+    mdlwUserSession,
+    adminPremiumPermission
 }

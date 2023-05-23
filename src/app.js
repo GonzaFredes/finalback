@@ -19,6 +19,8 @@ const errorList = require('./utils/errors');
 const { mdwLogger } = require('./config/winston');
 const faker = require('@faker-js/faker');
 const loggerTest = require('./routes/logger.router')
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 mongoose.set('strictQuery', false)
 
@@ -26,6 +28,21 @@ mongoose.set('strictQuery', false)
 server.listen(8080, ()=> {
     console.log(PORT);
 });
+
+//documentación con SWAGGER
+const config = {
+  definition: {
+    openapi:'3.0.0',
+    info:{
+      title:'API',
+      description:'API Ecommerce'
+    }
+  }
+  ,apis:[`${__dirname}/docs/**/*yml`]
+}
+
+const spec = swaggerJsDoc(config)
+server.use('/api-docs',swaggerUi.serve,swaggerUi.setup(spec))
 
 
 //handlerbars
@@ -46,6 +63,7 @@ server.use(session({
   secret: 'clavesecreta',
   resave: true,
   saveUninitialized: true,
+  cookie: {maxAge: 24*60*60*1000},
 }));
 
 server.use(errorList)

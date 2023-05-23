@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const usersCollection = "usersLogin";
 
-const roles = ['admin', 'superadmin', 'user']
+const roles = ['admin', 'premium', 'user']
 
 const UserSchema = new mongoose.Schema({
   first_name: {

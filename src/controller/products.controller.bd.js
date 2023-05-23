@@ -18,17 +18,30 @@ const getProductsBd = async (req, res) => {
        }
 };
 
-const addProductBd = async (req, res, next)=>{
-    const product = req.body;
-    if (!product.title) {
-      return next(CustomError.createError({code:401,msg:invalidParamsProduct(product),typeError:ERROR_FROM_SERVER}))
-    }
+// const addProductBd = async (req, res, next)=>{
+//     const product = req.body;
+//     if (!product.title) {
+//       return next(CustomError.createError({code:401,msg:invalidParamsProduct(product),typeError:ERROR_FROM_SERVER}))
+//     }
+//     const newproduct = await ProductRepository.add(product);
+//     if (newproduct){
+//       res.json(newproduct)    
+//     }else{
+//       res.json(newproduct)   
+//     }
+// }
+
+const addProductBd = async (req, res, next) => {
+  const product = req.body;
+  if (req.user.role !== 'user') {
+    product.owner = req.user.email;
     const newproduct = await ProductRepository.add(product);
-    if (newproduct){
-      res.json(newproduct)    
-    }else{
-      res.json(newproduct)   
-    }
+    return res.json(newproduct);
+  }
+  if (!product.owner) {
+    const newproduct = await ProductRepository.add(product);
+    return res.json(newproduct);
+  }
 }
 
 const getProductIdBd = async (req, res, next)=>{
@@ -58,14 +71,25 @@ const UpdateProductBd = async (req, res)=>{
 }
 
 const deleteProductBd = async (req, res)=>{
-  const id = req.params.pid 
+  const id = req.params.pid;
+  const productExist = await Products.getProductId(id);
+  if (!productExist) {
+    return res.json({ msg: 'Producto Inexistente' });
+  }
+  if (req.user.role === 'admin') {
     const deleteproduct = await Products.DeleteProductId(id);
-    // const deleteproduct = await ProductRepository.delete(id);
-    if (deleteproduct){
-      res.json(deleteproduct)      
-    }else{
-      res.json(deleteproduct)
+    return res.json({ msg: 'Producto Eliminado' });
+  }
+  if (req.user.role === 'premium') {
+    if (req.user.email == productExist.owner) {
+      const deleteproduct = await Products.DeleteProductId(id);
+      return res.json({ msg: 'Producto Eliminado' });
+    } else {
+      return res.json({ msg: 'No tienes permisos para eliminar este producto' });
     }
+  } else {
+    return res.json({ msg: 'No tienes permisos para eliminar este producto' });
+  } 
 }
 
 module.exports ={

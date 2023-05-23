@@ -1,0 +1,49 @@
+paths:
+  /api/cartsBd:
+    get:
+      summary: obtiene todos los carritos de la base de datos
+      tags:
+        - "CartsBd"
+      responses:
+        "200": 
+          description: Se obtuvieron todos los carritos registrados correctamente
+  /api/cartsBd/{cid}:
+    get:
+      summary: obtiene el carrito de la base de datos
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se obtuvo el carrito correctamente
+    put:
+      summary: Actualizar carrito en la bd
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se actualizó el carrito correctamente
+
+# components:
+#   requestBodies:
+#     updateProduct:
+#       type: object
+#       properties:
+#         price: 
+#           type: String
+#           description: precio del producto
+#       example:
+#         price: "2000"

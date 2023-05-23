@@ -20,8 +20,8 @@ module.exports = {
     adminName: process.env.ADMINNAME,
     adminPassword: process.env.ADMINPASSWORD,
     mailing: {
-        user:process.env.USERMAILING, 
-        password:process.env.PASSWORDMAILING,
+        user:process.env.CORREO, 
+        password:process.env.CORREO_PASSWORD,
     },
     percistence: process.env.PERCISTENCE,
     PRIVATE_KEY_JWT: process.env.PRIVATE_KEY_JWT,
