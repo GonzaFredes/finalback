@@ -1,15 +1,17 @@
 paths:
   /api/cartsBd:
     get:
-      summary: obtiene todos los carritos de la base de datos
+      summary: Obtiene todos los carritos de la base de datos
       tags:
         - "CartsBd"
       responses:
         "200": 
           description: Se obtuvieron todos los carritos registrados correctamente
+        "500": 
+          description: No se pudieron obtener los carritos registrados correctamente
   /api/cartsBd/{cid}:
     get:
-      summary: obtiene el carrito de la base de datos
+      summary: Obtiene el carrito de la base de datos
       tags:
         - "CartsBd"
       parameters:
@@ -22,8 +24,10 @@ paths:
       responses:
         "200": 
           description: Se obtuvo el carrito correctamente
+        "500": 
+          description: No se pudo obtener el carrito correctamente
     put:
-      summary: Actualizar carrito en la bd
+      summary: Actualizar datos del carrito 
       tags:
         - "CartsBd"
       parameters:
@@ -36,14 +40,70 @@ paths:
       responses:
         "200": 
           description: Se actualizó el carrito correctamente
-
-# components:
-#   requestBodies:
-#     updateProduct:
-#       type: object
-#       properties:
-#         price: 
-#           type: String
-#           description: precio del producto
-#       example:
-#         price: "2000"
+        "500": 
+          description: No se pudo actualizar el carrito correctamente
+    delete:
+      summary: Elimina todos los productos del carrito
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se eliminaron todos los productos del carrito correctamente
+        "500": 
+          description: No se pudieron eliminar los productos del carrito
+  /api/cartsBd/{cid}/product/{pid}:
+    post:
+      summary: Agrega producto al carrito
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se agregó el producto al carrito correctamente
+        "500": 
+          description: No se encontró el producto para agregar al carrito
+    put:
+      summary: Actualiza la cantidad de productos en el carrito
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se actualizó la cantidad de productos en el carrito correctamente
+        "500": 
+          description: No se logró actualizar la cantidad de productos en el carrito correctamente
+    delete:
+      summary: Elimina el producto del carrito
+      tags:
+        - "CartsBd"
+      parameters:
+        - name: cid
+          in: path
+          description: identificador del carrito
+          required: true
+          schema:
+            $type: String
+      responses:
+        "200": 
+          description: Se eliminó el producto del carrito correctamente
+        "500": 
+          description: No se pudo eliminar el producto

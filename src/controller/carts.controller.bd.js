@@ -126,6 +126,7 @@ const deleteProductToCart = async (req, res) => {
 const deleteAllProductsCart = async (req, res) => {
   const { cid, pid } = req.params;
   const Cart = await BdCartManager.getCartsId(cid);
+  console.log(Cart);
   if (Cart.products.length > 0) {
     Cart.products = [];
     Cart.quantityTotal = 0
