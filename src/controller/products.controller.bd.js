@@ -33,7 +33,7 @@ const getProductsBd = async (req, res) => {
 
 const addProductBd = async (req, res, next) => {
   const product = req.body;
-  if (req.user.role !== 'user') {
+  if (req.user === 'premium') {
     product.owner = req.user.email;
     const newproduct = await ProductRepository.add(product);
     return res.json(newproduct);
