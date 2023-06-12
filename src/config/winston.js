@@ -28,8 +28,11 @@ const loggerProd = winston.createLogger({
             winston.format.simple()
         )
     }),
-        new winston.transports.File({level:'error', filename:'./errors.log'})
-    ]
+        new winston.transports.File({level:'error',
+        filename:'./errors.log',
+        fotmat: winston.format.simple(),
+    }),
+    ],
 });
 
 const loggerDev = winston.createLogger({

@@ -11,6 +11,13 @@ class BdUserManager {
 
   delete = (id) => UsersModel.findByIdAndDelete(id);
 
+  lastConnection = async (user, lastconnection) => {
+    user.last_connection = lastconnection;
+    // let result = UsersModel.updateOne({ email: user.email }, user);
+    let result = await UsersModel.findByIdAndUpdate(user._id, {last_connection: lastconnection});
+    return result;
+  };
+
 }
 
 module.exports = new BdUserManager();

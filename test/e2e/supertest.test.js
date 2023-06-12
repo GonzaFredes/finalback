@@ -82,6 +82,33 @@ describe('Test de productos', () => {
     expect(ok).to.be.true;
     expect(_body).to.be.an.instanceof(Object);
   });
+  //creacion de mascota
+  it('Registrar pet con imagen', async () => {
+    const response = await request.post('/api/pets/withimage')
+    .field("name","test")
+    .field("specie","test")
+    .field("birthDate","12-30-2000")
+    .attach("image","/Users/gonza/Documents/Documentos/Estudios/CODERHOUSE/Backend/segundapreentregabackend/test/e2e/supertest.test.js");
+    const { statusCode, _body } = response;
+    
+    expect(_body.payload.image).to.be.ok
+    expect(_body.status).to.equal('success')
+    expect(statusCode).to.equal(200)
+  })
+  
+  it('Agregar imagen al producto', async () => {
+    const response = await request.post('/api/pets/withimage')
+    .field("name","test")
+    .field("specie","test")
+    .field("birthDate","12-30-2000")
+    .attach("image","/Users/gonza/Documents/Documentos/Estudios/CODERHOUSE/Backend/segundapreentregabackend/test/e2e/supertest.test.js");
+    const { statusCode, _body } = response;
+
+    expect(_body.msg).to.equal('success')
+    expect(_body.data._id).to.be.ok
+    expect(statusCode).to.equal(200)
+  })
+
 });
 
 //Testing de carrito
