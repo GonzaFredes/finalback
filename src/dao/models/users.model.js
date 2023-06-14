@@ -48,7 +48,7 @@ const UserSchema = new mongoose.Schema({
     default: [],
   },
   last_connection: {
-    type: Date,
+    type: String,
     default: Date.now(),
   },
 });

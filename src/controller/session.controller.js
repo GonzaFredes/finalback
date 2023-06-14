@@ -115,6 +115,11 @@ const updateRole = async (req, res) => {
   const id = req.params.uid;
   const rol = req.body;
   if (req.user.role === 'user') {
+    const document = req.user.documents;
+    const array = document.filter((element) => TYPE_DOCUMENTS.includes(element.name));
+    if (array.length < 3) {
+      return res.json({ msg: 'Para ser usuario premium debe subir la documentacion necesaria' });
+    } 
     const update = await BdSessionManager.UpdateRole(id, rol);
     return res.status(200).json({
       status: 'success',

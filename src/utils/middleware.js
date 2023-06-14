@@ -41,7 +41,7 @@ const mdlwUserSession = (req, res, next) => {
 const premiumDocs = async (req,res,next) => {
     if (req.user.documents) {
         const docs = req.user.documents
-        const files = docs.map(File)
+        const files = docs.map()
         console.log(files);
         res.status(200).json({files});
     }

@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
             return cb(new Error("type file not support"));
         }
         
-
         if (file.fieldname == "thumbnail") route = "profile";
         if (file.fieldname == "document") route = "documents";
         if (file.fieldname == "product") route = "products";
@@ -45,19 +44,22 @@ const uploader = multer({ storage: storage });
 const saveDocs = uploader.fields([
     { name: "thumbnail" },
     { name: "image" },
+    { name: "Comprobante de domicilio" },
+    { name: "Comprobante de estado de cuenta" },
+    { name: "Identificación" },
     { name: "document"},
     { name: "product"},
-    { name: "location" },
-    { name: "accState" },
-
 ]);
 const upload = multer();
 const reviewDocs = upload.fields([
     { name: "thumbnail" },
     { name: "image" },
-    { name: "location" },
-    { name: "accState" },
-    { name: "identification" },
+    { name: "Comprobante de domicilio" },
+    { name: "Comprobante de estado de cuenta" },
+    { name: "Identificación" },
+    { name: "document"},
+    { name: "product"},
+
 ]);
 
 module.exports = {

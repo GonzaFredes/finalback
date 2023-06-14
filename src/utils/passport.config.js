@@ -84,9 +84,10 @@ const InitPassport = () => {
         const user = await BdSessionManager.UserSession(_id);
         done(null, user)
     })
-    // passport.deserializeUser (async (id,done)=>{
-    //     const user = await UsersModel.findById(id);
-    //     done(null, user)
+    // passport.deserializeUser (async (_id,done)=>{
+    //     const user = await BdSessionManager.UserSession(_id);
+    //     const DTOuser = DTOuser(user);
+    //     done(null, DTOuser);
     // })
 };
 
