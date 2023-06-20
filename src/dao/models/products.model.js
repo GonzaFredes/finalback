@@ -32,6 +32,9 @@ const productSchema = new mongoose.Schema({
         type: String,
         default: 'admin',
     },
+    ownerRole: {
+        type: String,
+    }
 });
 
 productSchema.plugin(paginate)

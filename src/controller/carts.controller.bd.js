@@ -258,18 +258,6 @@ const purchase = async (req, res) => {
     }
   }
 
-  // for (let i = 0; i < carts.length; i++) {
-  //   const p = carts[i];
-  //   const productBd = await BdProductManager.getProductId(p.id)
-
-  //   if(productBd.stock >= p.quantity){
-  //     cartsTicket.push(productBd)
-  //   }else{
-  //     cartsReject.push(productBd)
-  //   }
-  // }
-  // const total = cartsTicket.reduce((acc,p)=>p.price+acc,0)
-
   const cart = await BdCartManager.purchase({ code: v4(), amount: total, purchaser: id, products: cartsTicket }); //agrega los campos a mostrar en el ticket
   if (!cart.error) {
     res.json(cart)

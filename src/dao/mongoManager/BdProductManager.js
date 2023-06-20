@@ -32,7 +32,6 @@ class BdProductManager {
       return getproductId
     } catch (error) {
       return next(CustomError.createError({code:401,msg:invalidId(id),typeError:INVALID_FILTER}))
-      // return { msg: "Producto no encontrado" }
     }
   }
 
