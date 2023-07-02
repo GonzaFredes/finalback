@@ -16,14 +16,14 @@ const PaymentForm = () => {
   const handlerPurchase = async () => {
     try {
       const { cart: cid } = JSON.parse(localStorage.getItem('usuario')); 
-      await axios.get(`http://localhost:8080/api/cartsBd/${cid}/purchase`);
+      await axios.get(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}/purchase`);
     } catch (error) {}
   };
   const handlerCleanCart = async () => {
     const { cart: cid } = JSON.parse(localStorage.getItem('usuario'));
     try {
       setIsLoading(true);
-      const response = await axios.delete(`http://localhost:8080/api/cartsBd/${cid}`);
+      const response = await axios.delete(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}`);
       setCart(response.data.Carrito);
     } catch (error) {
       setError(true);

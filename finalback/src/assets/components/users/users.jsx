@@ -15,11 +15,11 @@ const Users = () => {
   const handlerSwitchRole = async (userWithNewRole) => {
     try {
       setIsLoading(true);
-      await axios.put("http://localhost:8080/api/user", {
+      await axios.put("https://finalback-production-b4d6.up.railway.app/api/user", {
         id: userWithNewRole._id,
         user: userWithNewRole
       }, {withCredentials: true,});
-      const response = await axios.get('http://localhost:8080/api/user');
+      const response = await axios.get('https://finalback-production-b4d6.up.railway.app/api/user');
       setUsers(response.data);
     } catch (error) {
       setError(true);
@@ -30,8 +30,8 @@ const Users = () => {
   const handlerDeleteUser = async (id) => {
     try {
       setIsLoading(true);
-      await axios.delete("http://localhost:8080/api/user/" + id, null, {withCredentials: true});
-      const response = await axios.get('http://localhost:8080/api/user', {withCredentials: true});
+      await axios.delete("https://finalback-production-b4d6.up.railway.app/api/user/" + id, null, {withCredentials: true});
+      const response = await axios.get('https://finalback-production-b4d6.up.railway.app/api/user', {withCredentials: true});
 
       setUsers(response.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const Users = () => {
     const fetchUsers = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('http://localhost:8080/api/user');
+        const response = await axios.get('https://finalback-production-b4d6.up.railway.app/api/user');
 
         setUsers(response.data);
       } catch (error) {

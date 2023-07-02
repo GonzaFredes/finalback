@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 function Logout() {
 
   const buttonclick = useEffect(() => {
-    fetch('http://localhost:8080/api/session/logout', {
+    fetch('https://finalback-production-b4d6.up.railway.app/api/session/logout', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     }).then(()=>{

@@ -9,7 +9,7 @@ export default class PaymentService {
   }
   createPaymentIntent = ({ productId, callbackSuccess, callbackError }) => {
     // const requestInfo = { url: `${REACT_APP_BASE_URL}${REACT_APP_PAYMENT_ENDPOINT}/payment-intents?id=${productId}`, callbackSuccess, callbackError }; 
-    const requestInfo = { url: `http://localhost:8080/api/cartsBd/payments/?id=${productId}`, callbackSuccess, callbackError };
+    const requestInfo = { url: `https://finalback-production-b4d6.up.railway.app/api/cartsBd/payments/?id=${productId}`, callbackSuccess, callbackError };
 
     this.client.makePostRequest({ ...requestInfo });
   };

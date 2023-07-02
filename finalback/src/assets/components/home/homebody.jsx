@@ -16,11 +16,11 @@ function Home() {
   const { cart } = JSON.parse(localStorage.getItem('usuario'));
 
   const addToCart = async (cid, pid) => {
-    await axios.post(`http://localhost:8080/api/cartsBd/${cid}/product/${pid}`);
+    await axios.post(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}/product/${pid}`);
   };
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/productsBd/?${selectedPage ? `page=${selectedPage}` : ''}`, {
+    fetch(`https://finalback-production-b4d6.up.railway.app/api/productsBd/?${selectedPage ? `page=${selectedPage}` : ''}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })

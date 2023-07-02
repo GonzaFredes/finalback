@@ -15,7 +15,7 @@ function Register() {
   const [Edad, setEdad] = useState('');
   const navigate = useNavigate();
   const registeruser = async () => {
-    const res = await axios.post('http://localhost:8080/api/session/register/', {
+    const res = await axios.post('https://finalback-production-b4d6.up.railway.app/api/session/register/', {
       first_name: Firstname,
       last_name: Lastname,
       age: Edad,

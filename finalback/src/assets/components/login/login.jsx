@@ -10,7 +10,7 @@ function Login() {
   const [Password, setPassword] = useState('');
   const navigate = useNavigate();
   const loginuser = async () => {
-    const res = await axios.post('http://localhost:8080/api/session/login/', {
+    const res = await axios.post('https://finalback-production-b4d6.up.railway.app/api/session/login/', {
       email: Email,
       password: Password,
     }).catch( (error) => {

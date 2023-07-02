@@ -12,7 +12,7 @@ function Profile() {
   const [Lastname, setLastName] = useState('');
   
   const fetchUser = async () => {
-    const response = await axios.get('http://localhost:8080/usernow',{
+    const response = await axios.get('https://finalback-production-b4d6.up.railway.app/usernow',{
       first_name: Firstname,
       last_name: Lastname,
       email: Email,

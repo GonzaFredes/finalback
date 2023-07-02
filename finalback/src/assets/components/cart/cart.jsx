@@ -16,8 +16,8 @@ function Cart() {
     console.log(cid, pid);
     try {
       setIsLoading(true);
-      await axios.delete(`http://localhost:8080/api/cartsBd/${cid}/product/${pid}`);
-      const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`);
+      await axios.delete(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}/product/${pid}`);
+      const response = await axios.get(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}`);
       setCart(response.data);
     } catch (error) {
       console.log(error);
@@ -30,7 +30,7 @@ function Cart() {
     const { cart: cid } = JSON.parse(localStorage.getItem('usuario'));
     try {
       setIsLoading(true);
-      const response = await axios.delete(`http://localhost:8080/api/cartsBd/${cid}`);
+      const response = await axios.delete(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}`);
       setCart(response.data.Carrito);
     } catch (error) {
       setError(true);
@@ -44,7 +44,7 @@ function Cart() {
     const fetchCart = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get(`http://localhost:8080/api/cartsBd/${cid}`); // Reemplaza 'cid' por el ID correcto del carrito que deseas obtener
+        const response = await axios.get(`https://finalback-production-b4d6.up.railway.app/api/cartsBd/${cid}`); // Reemplaza 'cid' por el ID correcto del carrito que deseas obtener
         setCart(response.data);
         console.log(response.data);
       } catch (error) {
