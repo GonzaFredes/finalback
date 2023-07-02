@@ -6,16 +6,17 @@ const permissions = require('../utils/middleware');
 
 const router =  Router();
 
-router.post('/', cartsControllerBd.createCarts)
-router.get('/', cartsControllerBd.bdgetCarts)
-router.get('/:cid',cartsControllerBd.bdgetCartId)
-router.put('/:cid/',cartsControllerBd.updateCart)
+router.post('/', cartsControllerBd.createCarts);
+router.get('/', cartsControllerBd.bdgetCarts);
+router.get('/:cid', cartsControllerBd.bdgetCartId);
+router.put('/:cid/',cartsControllerBd.updateCart);
 router.delete ('/:cid/', cartsControllerBd.deleteAllProductsCart);
-router.post('/:cid/product/:pid', permissions.mdlwUserSession, cartsControllerBd.addProductToCart);
-router.delete('/:cid/product/:pid', permissions.mdlwUserSession, cartsControllerBd.deleteProductToCart);
+router.post('/:cid/product/:pid', cartsControllerBd.addProductToCart);
+router.delete('/:cid/product/:pid', cartsControllerBd.deleteProductToCart);
 router.put('/:cid/product/:pid',cartsControllerBd.updateQuantityOnCart)
 
 router.get ('/:cid/purchase', permissions.mdlwUserSession ,cartsControllerBd.purchase)
+router.post('/payments', cartsControllerBd.paymentProcess);
 
 
 module.exports = router;

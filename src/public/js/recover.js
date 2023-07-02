@@ -18,7 +18,7 @@ form.addEventListener('submit', (event) => {
         Swal.fire({
           icon: 'success',
           title: 'Felicitaciones',
-          text: 'Apreniste a  reestablecer tu contraseña',
+          text: 'Aprendiste a  reestablecer tu contraseña',
         });
       } else {
         Swal.fire({

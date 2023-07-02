@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.formContainer {
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  display: flex;
+  height: 80vh;
+}
+
+.formLogin {
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(147, 147, 147);
+  width: 30rem;
+}
+.campos {
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  width: 20rem;
+}
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.loginLinks {
+  color: black;
+}
+
+
+
+.formRegister {
+  width: 30rem;
+}
+
+.buttonsRegister {
+  flex-wrap: wrap;
+}

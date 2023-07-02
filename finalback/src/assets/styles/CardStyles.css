@@ -1,0 +1,47 @@
+
+.cardContainer {
+  display: flex;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-left: 10rem;
+  margin-right: 10rem;
+
+}
+
+.card {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.card .card-img-top {
+  height: 300px;
+  object-fit:contain;
+}
+
+.card .card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card .card-text {
+  margin-bottom: 10px;
+}
+
+.card .card-price {
+  font-weight: bold;
+}
+
+.card .btn {
+  width: 100%;
+}
+
+.bodyCard {
+  text-align: center;
+}
+
+.paginate {
+  display: flex;
+  justify-content: center;
+}

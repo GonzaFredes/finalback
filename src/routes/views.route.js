@@ -13,5 +13,6 @@ router.get('/logout', viewControllers.logout);
 router.get('/current', viewControllers.current);
 router.get('/forgot-password', viewControllers.fortgotPassword);
 router.get('/recover-password', viewControllers.recoverPassword);
+router.get('/usernow', viewControllers.sessionData);
 
 module.exports = router;

@@ -21,6 +21,7 @@ const faker = require('@faker-js/faker');
 const loggerTest = require('./routes/logger.router')
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const Cors = require('cors');
 
 mongoose.set('strictQuery', false)
 
@@ -28,6 +29,11 @@ mongoose.set('strictQuery', false)
 server.listen(8080, ()=> {
     console.log(PORT);
 });
+
+server.use(Cors({
+  credentials: true,
+  origin: "http://localhost:3000"
+}));
 
 //documentación con SWAGGER
 const config = {

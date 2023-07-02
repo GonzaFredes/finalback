@@ -7,10 +7,7 @@ const moment = require("moment");
 
 const getUsers = async (req, res) => {
   try {
-    const users = await userService.getUser(
-      {},
-      "first_name  last_name email role"
-    );
+    const users = await userService.getUser({},"first_name  last_name email role");
     res.json(users);
   } catch (error) {
     console.error(error);
@@ -34,7 +31,7 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   await userService.delete(id);
   res.json({ msg: "ok" });
 };

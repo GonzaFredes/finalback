@@ -97,6 +97,11 @@ const recoverPassword = async (req, res) => {
     res.render('recover-password');
 };
 
+const sessionData = async (req, res) => {
+    userNow = req.session.user;
+    res.json(userNow);
+}
+
 module.exports = {
     views,
     viewCart,
@@ -108,4 +113,5 @@ module.exports = {
     current,
     fortgotPassword,
     recoverPassword,
+    sessionData,
 }

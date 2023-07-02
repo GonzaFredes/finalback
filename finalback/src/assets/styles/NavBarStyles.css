@@ -1,0 +1,19 @@
+.navbarestilos {
+  list-style-type: none;
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(255, 255, 255);
+  font-size: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #7b77778c;
+}
+.navbarestilos a {
+  color: rgb(10, 9, 9);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.privado {
+  display: flex;
+  text-align: end;
+}

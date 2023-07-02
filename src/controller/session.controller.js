@@ -18,7 +18,7 @@ const sessionLogin = async (req, res) => {
 };
 
 const loginRegister = async (req, res) => {
-  req.logger.info(`${req.user.firstName} - updated last connection`)
+  req.logger.info(`${req.user.first_name} - updated last connection`)
   await BdUsersManager.lastConnection(req.user, new Date().toLocaleString());
   const dtoUser = new DTOsUser(req.user);
   req.session.user = dtoUser;
@@ -45,8 +45,8 @@ const forgotPassword = async (req, res) => {
     let token = generateToken({ id: user.id });
     mailingService.sendMail({
       to: user.email,
-      subject: `Hola ${user.first_name}`,
-      html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">aqui</a>`,
+      subject: `Hola ${user.first_name} solicitaste un reinicio de tu contraseña`,
+      html: `<a href="http://localhost:8080/api/session/redirectForgotPassword/${token}">Haz clic aqui para cambiar tu contraseña</a>`,
     });
     res.json({
       status: 'sucess',

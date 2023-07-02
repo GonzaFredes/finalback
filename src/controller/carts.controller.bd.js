@@ -3,6 +3,7 @@ const BdCartManager = require("../dao/mongoManager/BdCartManager");
 const BdProductManager = require("../dao/mongoManager/BdProductManager");
 const { mdwLogger } = require("../config/winston");
 const mailingService = require("../service/mailing.service");
+const stripeService = require("../service/stripe.service");
 
 
 const createCarts = async (req, res) => {
@@ -16,16 +17,18 @@ const createCarts = async (req, res) => {
 }
 
 const bdgetCartId = async (req, res) => {
-  const id = req.params.cid
+  const id = req.params.cid;
   const cart = await BdCartManager.getCartsId(id);
   if (!cart.error) {
     res.json(cart)
   } else {
     res.json(cart)
+    console.log(cart)
   }
 }
 
 const bdgetCarts = async (req, res) => {
+  
   const cart = await BdCartManager.getCarts();
   if (!cart.error) {
     res.json(cart)
@@ -44,62 +47,56 @@ const addProductToCart = async (req, res) => {
       ok: false,
     });
   }
-  if (product.email == req.user.email) {
-    return res.status(400).json({
-      msg: `Usuario no autorizado para agregar este producto`,
-    });
-  }
+  // if (product.email == req.user.email) {
+  //   return res.status(400).json({
+  //     msg: `Usuario no autorizado para agregar este producto`});
+  // }
 
   const cart = await BdCartManager.getCartsId(cid);
-
+  
   if (!cart) {
-    const newCart = {
-      priceTotal: product.price,
-      quantityTotal: 1,
-      products: [{ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 }],
-      username: cid
-    }
+    return res.status(200).json({msg: 'Carrito no Encontrado'});
+  }
 
-    const cartToSave = await BdCartManager.addProductToCarts(newCart);
+  const cartToSave = await BdCartManager.addProductToCarts(cid, product);
 
-    return res.status(200).json({
-      msg: 'Carrito creado con exito',
+  return res.status(200).json({
+      msg: 'Producto agregado',
       cart: cartToSave
-    })
-  }
-
-  const findProduct = cart.products.find((product) => product.id === pid);
-
-  if (!findProduct) {
-    cart.products.push({ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 })
-    cart.quantity = cart.quantity + 1
-    cart.priceTotal = cart.priceTotal + product.price
-  } else {
-    findProduct.quantity++;
-    cart.priceTotal = cart.products.reduce((acumulador, total) => acumulador + (product.price * total.quantity), 0);
-  }
-  cart.quantityTotal = cart.quantityTotal + 1;
-  const cartToUpdate = await BdCartManager.updateToCart(cart)
-
-  setTimeout(() => {
-    mailingService.sendMail({
-      to: req.user.email, subject: `Hola ${req.user.first_name} que esperas? quedan pocas unidades`,
-      html: `<h1>No esperes mas, y ve ahora a comprar tu ${product.title}</h1><a href="http://localhost:8080/">Termina la compra aquí</a>`
-    })
-  }, 5000)
-
-  return res.status(201).json({
-    msg: `Producto agregado al carrito: ${cid}`,
-    cart: cartToUpdate,
   })
+
+  // const findProduct = cart.products.find((product) => product.id === pid);
+
+  // if (!findProduct) {
+  //   cart.products.push({ id: product.id, title: product.title, description: product.description, price: product.price, quantity: 1 })
+  //   cart.quantity = cart.quantity + 1
+  //   cart.priceTotal = cart.priceTotal + product.price
+  // } else {
+  //   findProduct.quantity++;
+  //   cart.priceTotal = cart.products.reduce((acumulador, total) => acumulador + (product.price * total.quantity), 0);
+  // }
+  // cart.quantityTotal = cart.quantityTotal + 1;
+  // const cartToUpdate = await BdCartManager.updateToCart(cart)
+
+  // setTimeout(() => {
+  //   mailingService.sendMail({
+  //     to: req.user.email, subject: `Hola ${req.user.first_name} que esperas? quedan pocas unidades`,
+  //     html: `<h1>No esperes mas, y ve ahora a comprar tu ${product.title}</h1><a href="http://localhost:8080/">Termina la compra aquí</a>`
+  //   })
+  // }, 5000)
+
+  // return res.status(201).json({
+  //   msg: `Producto agregado al carrito: ${cid}`,
+  //   cart: cartToUpdate,
+  // })
 };
 
 const deleteProductToCart = async (req, res) => {
   const { cid, pid } = req.params;
   req.mdwlLogger = `${cid}`;
   const Cart = await BdCartManager.getCartsId(cid);
-  JSON.stringify(Cart)
-  const findProductTocart = Cart.products.find((prod) => prod.id === pid)
+  // const findProductTocart = Cart.products.find((prod) => prod.id === pid)
+  const findProductTocart = Cart.products.find((prod) => prod._id.toString() === pid);
 
   if (!findProductTocart) {
     return res.status(400).json({
@@ -107,13 +104,16 @@ const deleteProductToCart = async (req, res) => {
     });
   } else {
     if (findProductTocart.quantity === 1) {
-      Cart.products = Cart.products.filter((prod) => prod.id !== pid);
+      // Cart.products = Cart.products.filter((prod) => prod.id !== pid);
+      Cart.products = Cart.products.filter((prod) => prod._id.toString() !== pid);
     } else {
       findProductTocart.quantity--;
     }
-    const product = await BdProductManager.getProductId(pid);
-    Cart.quantityTotal = Cart.quantityTotal - 1;
-    const total = Cart.products.reduce((acumulador, total) => acumulador + product.price * total.quantity, 0);
+    // const product = await BdProductManager.getProductId(pid);
+    // Cart.quantityTotal = Cart.quantityTotal - 1;
+    Cart.quantityTotal--;
+    // const total = Cart.products.reduce((acumulador, total) => acumulador + product.price * total.quantity, 0);
+    const total = Cart.products.reduce((total,cartProduct)=> total + cartProduct.products.price * cartProduct.quantity,0 );
     Cart.priceTotal = total;
     const cartToUpdate = await BdCartManager.updateToCart(Cart);
     return res.status(200).json({ msg: 'Producto eliminado del carrito', cart: cartToUpdate });
@@ -266,6 +266,29 @@ const purchase = async (req, res) => {
   }
 }
 
+const paymentProcess = async (req, res) => {
+  const { id } = req.query;
+  const cart = await BdCartManager.getCartsId(id);
+  if (!cart) {
+    return res.status(404).send('cart not found');
+  }
+
+  const config = {
+    amount: cart.priceTotal,
+    currency: 'usd',
+  };
+
+  console.log(config);
+
+  const paymentIntent = await stripeService.createPaymentIntents(config);
+  res.send({
+    status: 'sucess',
+    payload: paymentIntent,
+  });
+  console.log(paymentIntent);
+};
+
+
 module.exports = {
   createCarts,
   bdgetCarts,
@@ -275,5 +298,6 @@ module.exports = {
   deleteAllProductsCart,
   updateCart,
   updateQuantityOnCart,
-  purchase
+  purchase,
+  paymentProcess
 }

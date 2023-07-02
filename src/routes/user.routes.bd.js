@@ -10,7 +10,7 @@ const userRouter = Router()
 userRouter.get('/',getUsers)
 userRouter.post('/', insertUser)
 userRouter.put('/', updateUser)
-userRouter.delete('/', deleteUser)
+userRouter.delete('/:id', deleteUser)
 userRouter.delete('/deletelast', deleteLast2days)
 userRouter.post('/premium/:uid', sessionController.updateRole)
 userRouter.post('/:uid/documents', saveDocs ,sessionController.uploadDocs);
