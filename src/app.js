@@ -1,4 +1,5 @@
-const { mongoURL, adminName, NODE, PORT } = require('./config/config');
+// const { mongoURL, adminName, NODE, PORT } = require('./config/config');
+const { mongoURL, adminName, NODE } = require('./config/config');
 const express = require('express');
 const handlebars = require('express-handlebars');
 
@@ -22,13 +23,14 @@ const loggerTest = require('./routes/logger.router')
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const Cors = require('cors');
-
+const PORT = process.env.PORT || 8080;
 mongoose.set('strictQuery', false)
 
 
-server.listen(8080, ()=> {
-    console.log(PORT);
-});
+// server.listen(8080, ()=> {
+//     console.log(PORT);
+// });
+server.listen(PORT,()=>console.log('Servidor listo escuchando en puerto ${PORT}'))
 
 server.use(Cors({
   credentials: true,
@@ -63,7 +65,8 @@ server.use(express.urlencoded({extended:true}))
 //session para cookies del login
 server.use(session({
   store: MongoConnect.create({
-    mongoUrl: 'mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority',
+    // mongoUrl: 'mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority',
+    mongoUrl: process.env.MONGOURL,
     mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true},
   }),
   secret: 'clavesecreta',
@@ -127,7 +130,8 @@ server.use("/api/user/", userRouter);
 
 // conexion con mongodb para productos
 const test = async () => {
-  await mongoose.connect ('mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority', 
+  // await mongoose.connect ('mongodb+srv://gonzafredes1:SQ3HgTEmJgPANS7K@pruebabackend.7gddxpl.mongodb.net/?retryWrites=true&w=majority', 
+  await mongoose.connect (process.env.MONGOURL, 
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
