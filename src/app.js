@@ -34,7 +34,7 @@ server.listen(PORT,()=>console.log('Servidor listo escuchando en puerto ${PORT}'
 
 server.use(Cors({
   credentials: true,
-  origin: "https://finalback-production-b4d6.up.railway.app/"
+  origin: "https://reactbackfront-production.up.railway.app/"
 }));
 
 //documentación con SWAGGER
